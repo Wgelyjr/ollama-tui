@@ -5,8 +5,8 @@ import sys
 
 class OllamaInterface:
 
-    def __init__(self, client, model, role, content):
-        self.client = client
+    def __init__(self, host, model, role, content):
+        self.host = host
         self.model = model
         self.role = role
         self.content = content
@@ -19,7 +19,7 @@ class OllamaInterface:
 
     async def chat(self):
         message = {'role': self.role, 'content': self.content}
-        async for part in await ollama.AsyncClient(host=self.client).chat(model=self.model, messages=[message], stream=True):
+        async for part in await ollama.AsyncClient(host=self.host).chat(model=self.model, messages=[message], stream=True):
             print(part['message']['content'], end='', flush=True)
         
     def one_shot(self):
@@ -41,23 +41,3 @@ class OllamaInterface:
             self.content = str(input("\n\n>>>"))
             self.content_parser()
             self.one_shot()
-
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-c","--client",default="http://localhost:11434",help="Host of the Ollama instance")
-    parser.add_argument("-m", "--model", default="llama3", help="Model to utilize within Ollama")
-    parser.add_argument("-r", "--role", default="user", help="Role - I don't know why this would be used")
-    parser.add_argument("-w","--content", default=None, help="Message to send - leave blank for interactive mode")
-
-    args = parser.parse_args()
-
-    OllamaInterface(
-        client=args.client,
-        model=args.model,
-        role=args.role,
-        content=args.content
-    )
-
-if __name__ == "__main__":
-    main()
