@@ -20,9 +20,15 @@ Export environment variables with your preferred defaults:
 - OLLAMATUI_ROLE="user"
 - OLLAMATUI_MESSAGE="When was beethoven born?"
 
-Pass your preferred defaults into the application:
+Environment variables can be passed in alongside calling the application:
+
+`OLLAMATUI_HOST="http://localhost:11434" ollamatui`
+
+Or you can pass your preferred defaults into the application:
 
 `ollama-tui -h localhost:11434`
+
+Or some combination of the two.
 
 Command-line switches will override entries from environment variables.
 
